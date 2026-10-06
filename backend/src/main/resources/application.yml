@@ -1,0 +1,57 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: spring-boot-explorer
+
+  # Deshabilita la página de login por defecto de Spring Security
+  security:
+    filter:
+      order: 10
+
+# Configuración custom para JWT (no es de Spring, la leemos con @Value)
+app:
+  jwt:
+    secret: spring-boot-explorer-secret-key-minimum-256-bits-for-hmac256-algo-ok
+    expiration-ms: 3600000  # 1 hora
+
+# Actuator: qué endpoints exponer
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,beans,env
+  endpoint:
+    health:
+      show-details: always
+  info:
+    env:
+      enabled: true
+
+# Info que se ve en /actuator/info
+info:
+  app:
+    name: Spring Boot Explorer
+    description: Aplicación interactiva para aprender Spring Boot
+    version: 1.0.0
+    java-version: 21
+    spring-boot-version: 3.3.5
+
+# Swagger / OpenAPI
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: method
+  api-docs:
+    path: /v3/api-docs
+
+# Config custom para el explorador de código fuente
+explorer:
+  source-base-path: src/main/java
+
+# Logging: nivel DEBUG para nuestro paquete, para ver trazas del listener asíncrono
+logging:
+  level:
+    com.example.explorer: DEBUG
